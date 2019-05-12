@@ -5,4 +5,9 @@ const app = new Vue({
 
 const renderer = require('vue-server-renderer').createRenderer();
 
-renderer
+renderer.renderToString(app, (err, html) => {
+  if (err) {
+    throw err
+  }
+  console.log(html)
+})
