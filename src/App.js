@@ -1,31 +1,12 @@
-const Vue = require('vue');
-const Koa = require('koa');
-const app = new Koa();
+import Vue from 'vue'
+import App from './App.vue'
 
-app.use(async ctx => {
+// 导出一个工厂函数，用于创建新的
+// 应用程序、router 和 store 实例
+export function createApp () {
   const app = new Vue({
-    template: `<div>Hello Vue SSR</div>`
+    // 根实例简单的渲染应用程序组件。
+    render: h => h(App)
   })
-
-  const renderer = require('vue-server-renderer').createRenderer({
-    template: require('fs').readFileSync(__dirname + '/template/index.template.html', 'utf-8')
-  });
-
-  const htmlContext = {
-    title: 'Eric Blog',
-    meta: `
-      <meta type="keywords">
-      <meta type="discribution">
-    `
-  }
-  renderer.renderToString(app, htmlContext, (err, html) => {
-    if (err) {
-      throw err
-    }
-    console.log(html)
-    ctx.body = html
-  })
-})
-
-app.listen(8888)
-
+  return { app }
+}
